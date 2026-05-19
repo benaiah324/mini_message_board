@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages</title>
+  <link rel="stylesheet" href="/styles-form.css">
+</head>
+
+<body>
+  <h2>New Message</h2>
+  <form method="POST" action="/new">
+    <div>
+      <label for="author">Author</label>
+      <input type="text" name="author" id="" required>
+    </div>
+    <div>
+      <label for="message">Message</label>
+      <textarea name="message" id="" cols="22" rows="5" placeholder="Enter message here"></textarea>
+      <!-- <input type="text" name="message" id="" required> -->
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+  <a href="/">Display messages</a>
+</body>
+
+</html>

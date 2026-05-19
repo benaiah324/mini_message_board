@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Message Detail</title>
+    <link rel="stylesheet" href="/styles-index.css">
+</head>
+
+<body>
+    <h1>Message Detail</h1>
+    <div class="container">
+        <div class="messages">
+            <div class="mess">
+                <h4>Message:</h4>
+                <p>
+                    <%= message.text %>
+                </p>
+            </div>
+            <div class="mess">
+                <h4>User:</h4>
+                <p>
+                    <%= message.user %>
+                </p>
+            </div>
+            <div class="mess">
+                <h4>Date:</h4>
+                <p>
+                    <%= message.added %>
+                </p>
+            </div>
+        </div>
+
+        <button class="btn-new-message" onclick="window.location.href='/'">Back to messages</button>
+    </div>
+</body>
+
+</html>

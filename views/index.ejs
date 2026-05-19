@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles-index.css">
+    <!-- <script src="../script.js" defer></script> -->
+    <title>Home</title>
+</head>
+
+<body>
+    <h1>Messages</h1>
+    <div class="container">
+
+
+        <% messages.forEach(message=> { %>
+            <div class="messages">
+                <div class="mess">
+                    <h4>Message: </h4>
+                    <p>
+                        <%= message.text %>
+                    </p>
+                </div>
+                <div class="mess">
+                    <h4>User: </h4>
+                    <p>
+                        <%= message.user %>
+                    </p>
+                </div>
+                <div class="mess">
+                    <h4>Date: </h4>
+                    <p>
+                        <%= message.added %>
+                    </p>
+                </div>
+                <div class="btn-option">
+                    <form method="POST" action="/delete/<%= message.id %>" style="display:inline;">
+                        <button type="submit" class="del">delete</button>
+                    </form>
+                    <a href="/message/<%= message.id %>" style="display:inline;"><button type="button">open</button></a>
+                </div>
+            </div>
+            <% }) %>
+                <button class="btn-new-message" onclick="window.location.href='/new'">Add New Message</button>
+    </div>
+
+</body>
+
+</html>
