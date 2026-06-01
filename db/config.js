@@ -9,6 +9,9 @@ const pool = new Pool({
 });
 
 pool.on("connect", () => {
+  ssl: {
+    rejectUnauthorized: false;
+  }
   console.log(
     `Connected to the database ${process.env.DB_DATABASE_NAME} at 
     ${process.env.DB_HOST}:${process.env.DB_PORT} as user 
