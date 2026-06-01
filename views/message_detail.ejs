@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Message Detail</title>
+    <title>
+        <%= title %>
+    </title>
     <link rel="stylesheet" href="/styles-index.css">
 </head>
 
@@ -21,18 +23,18 @@
             <div class="mess">
                 <h4>User:</h4>
                 <p>
-                    <%= message.user %>
+                    <%= message.author %>
                 </p>
             </div>
             <div class="mess">
                 <h4>Date:</h4>
                 <p>
-                    <%= message.added %>
+                    <%= message.created_at %>
                 </p>
             </div>
         </div>
 
-        <button class="btn-new-message" onclick="window.location.href='/'">Back to messages</button>
+        <button class="btn-new-message" onclick="window.location.href='/api'">Back to messages</button>
     </div>
 </body>
 

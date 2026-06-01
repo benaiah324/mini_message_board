@@ -10,7 +10,7 @@
 
 <body>
   <h2>New Message</h2>
-  <form method="POST" action="/new">
+  <form method="POST" action="/api/new">
     <div>
       <label for="author">Author</label>
       <input type="text" name="author" id="" required>
@@ -18,11 +18,10 @@
     <div>
       <label for="message">Message</label>
       <textarea name="message" id="" cols="22" rows="5" placeholder="Enter message here"></textarea>
-      <!-- <input type="text" name="message" id="" required> -->
     </div>
     <button type="submit">Submit</button>
   </form>
-  <a href="/">Display messages</a>
+  <a href="/api">Display messages</a>
 </body>
 
 </html>

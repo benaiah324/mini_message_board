@@ -1,48 +1,35 @@
-const messages = [
-  {
-    id: crypto.randomUUID(),
-    text: "Hi there!",
-    user: "Amando",
-    added: new Date().toLocaleString(),
-  },
-  {
-    id: crypto.randomUUID(),
-    text: "Hello World!",
-    user: "Charles",
-    added: new Date().toLocaleString(),
-  },
-];
+const crypto = require("crypto");
+const getAllMessages = require("../models/messageModel.js").getAllMessages;
+const createMessage = require("../models/messageModel.js").createMessage;
+const deleteMessage = require("../models/messageModel.js").deleteMessage;
+const getMessageById = require("../models/messageModel.js").getMessageById;
 
 module.exports = {
-  get: (req, res) => {
+  get: async (req, res) => {
+    const messages = await getAllMessages();
+    // console.log(messages);
     res.render("index", { title: "Mini messageboard", messages: messages });
   },
-  post: (req, res) => {
-    const id = crypto.randomUUID();
+  post: async (req, res) => {
     const message = req.body.message;
     const author = req.body.author;
-    messages.push({
-      id: id,
-      text: message,
-      user: author,
-      added: new Date().toLocaleString(),
-    });
-    res.redirect("/");
+    await createMessage(req.body.message, req.body.author);
+    console.log("New message added");
+    res.redirect("/api");
   },
-  delete: (req, res) => {
-    const id = req.params.id;
-    const messageIndex = messages.findIndex((msg) => msg.id === id);
-    if (messageIndex !== -1) {
-      messages.splice(messageIndex, 1);
-    }
-    res.redirect("/");
+  delete: async (req, res) => {
+    await deleteMessage(req.params.id);
+    console.log(`Message for ${req.params.id} has been deleted`);
+    res.redirect("/api");
   },
-  getMessageDetail: (req, res) => {
-    const id = req.params.id;
-    const message = messages.find((msg) => msg.id === id);
+  getMessageDetail: async (req, res) => {
+    const message = await getMessageById(req.params.id);
     if (!message) {
       return res.status(404).render("404");
     }
-    res.render("message_detail", { message: message });
+    res.render("message_detail", {
+      title: "Message Detail",
+      message: message,
+    });
   },
 };
