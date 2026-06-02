@@ -4,32 +4,54 @@ const createMessage = require("../models/messageModel.js").createMessage;
 const deleteMessage = require("../models/messageModel.js").deleteMessage;
 const getMessageById = require("../models/messageModel.js").getMessageById;
 
+const renderDatabaseError = (res, error) => {
+  console.error("Database error:", error);
+  return res.status(503).render("error", {
+    title: "Database unavailable",
+    message:
+      "The database is currently unavailable. Please check your Render Postgres environment variables.",
+  });
+};
+
 module.exports = {
   get: async (req, res) => {
-    const messages = await getAllMessages();
-    // console.log(messages);
-    res.render("index", { title: "Mini messageboard", messages: messages });
+    try {
+      const messages = await getAllMessages();
+      res.render("index", { title: "Mini messageboard", messages });
+    } catch (error) {
+      return renderDatabaseError(res, error);
+    }
   },
   post: async (req, res) => {
-    const message = req.body.message;
-    const author = req.body.author;
-    await createMessage(req.body.message, req.body.author);
-    console.log("New message added");
-    res.redirect("/api");
+    try {
+      await createMessage(req.body.message, req.body.author);
+      console.log("New message added");
+      res.redirect("/api");
+    } catch (error) {
+      return renderDatabaseError(res, error);
+    }
   },
   delete: async (req, res) => {
-    await deleteMessage(req.params.id);
-    console.log(`Message for ${req.params.id} has been deleted`);
-    res.redirect("/api");
+    try {
+      await deleteMessage(req.params.id);
+      console.log(`Message for ${req.params.id} has been deleted`);
+      res.redirect("/api");
+    } catch (error) {
+      return renderDatabaseError(res, error);
+    }
   },
   getMessageDetail: async (req, res) => {
-    const message = await getMessageById(req.params.id);
-    if (!message) {
-      return res.status(404).render("404");
+    try {
+      const message = await getMessageById(req.params.id);
+      if (!message) {
+        return res.status(404).render("404");
+      }
+      res.render("message_detail", {
+        title: "Message Detail",
+        message,
+      });
+    } catch (error) {
+      return renderDatabaseError(res, error);
     }
-    res.render("message_detail", {
-      title: "Message Detail",
-      message: message,
-    });
   },
 };

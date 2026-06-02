@@ -4,6 +4,7 @@ const path = require("node:path");
 require("dotenv").config();
 const indexRouter = require("./routes/indexRouter");
 const messageRouter = require("./routes/messageRouter");
+const pool = require("./db/config.js");
 
 const PORT = process.env.SERVER_PORT || 3000;
 
@@ -24,6 +25,17 @@ app.get("/", (req, res) => {
 app.use("/api", indexRouter);
 app.use("/api/message", messageRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await pool.ensureMessagesTable();
+    console.log("Verified messages table exists");
+  } catch (error) {
+    console.error("Failed to initialize database schema:", error);
+  }
+
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+};
+
+startServer();

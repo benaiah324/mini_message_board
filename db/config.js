@@ -5,6 +5,10 @@ const isProduction = process.env.NODE_ENV === "production";
 const hasRealConnectionString =
   typeof process.env.DATABASE_URL === "string" &&
   /^postgres(?:ql)?:\/\//i.test(process.env.DATABASE_URL);
+const shouldUseSsl =
+  isProduction ||
+  hasRealConnectionString ||
+  /render\.com|postgresql/i.test(String(process.env.DB_HOST || ""));
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -15,7 +19,7 @@ const pool = new Pool({
     : undefined,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-  ssl: isProduction ? { rejectUnauthorized: false } : false,
+  ssl: shouldUseSsl ? { rejectUnauthorized: false } : false,
 });
 
 pool.on("connect", () => {
@@ -27,5 +31,16 @@ pool.on("connect", () => {
     `Connected to the database ${dbName} at ${process.env.DB_HOST}:${process.env.DB_PORT} as user ${process.env.DB_USER}`,
   );
 });
+
+pool.ensureMessagesTable = async () => {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS messages (
+      id SERIAL PRIMARY KEY,
+      text TEXT NOT NULL,
+      author TEXT NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+};
 
 module.exports = pool;
