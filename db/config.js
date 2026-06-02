@@ -2,21 +2,29 @@ const { Pool } = require("pg");
 require("dotenv").config();
 
 const isProduction = process.env.NODE_ENV === "production";
+const hasRealConnectionString =
+  typeof process.env.DATABASE_URL === "string" &&
+  /^postgres(?:ql)?:\/\//i.test(process.env.DATABASE_URL);
 
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
-  database: process.env.DATABASE_URL || process.env.DB_DATABASE_NAME,
+  database: hasRealConnectionString ? undefined : process.env.DB_DATABASE_NAME,
+  connectionString: hasRealConnectionString
+    ? process.env.DATABASE_URL
+    : undefined,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
+  ssl: isProduction ? { rejectUnauthorized: false } : false,
 });
 
 pool.on("connect", () => {
-  ssl: isProduction ? { rejectUnauthorized: false } : false;
+  const dbName = hasRealConnectionString
+    ? process.env.DATABASE_URL.split("/").pop().split("?")[0]
+    : process.env.DB_DATABASE_NAME;
+
   console.log(
-    `Connected to the database ${process.env.DATABASE_URL ? process.env.DATABASE_URL.split("/")[3] : process.env.DB_DATABASE_NAME} at 
-    ${process.env.DB_HOST}:${process.env.DB_PORT} as user 
-    ${process.env.DB_USER}`,
+    `Connected to the database ${dbName} at ${process.env.DB_HOST}:${process.env.DB_PORT} as user ${process.env.DB_USER}`,
   );
 });
 

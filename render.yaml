@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: mini-message-board
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SERVER_PORT
+        value: 10000
+      - key: DB_USER
+        value: your_render_db_user
+      - key: DB_HOST
+        value: your_render_db_host
+      - key: DB_DATABASE_NAME
+        value: your_render_db_name
+      - key: DB_PORT
+        value: 5432
+      - key: DB_PASSWORD
+        value: your_render_db_password
+      - key: DATABASE_URL
+        value: postgres://your_render_db_user:your_render_db_password@your_render_db_host:5432/your_render_db_name
