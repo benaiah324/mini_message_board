@@ -4,7 +4,6 @@ const path = require("node:path");
 require("dotenv").config();
 const indexRouter = require("./routes/indexRouter");
 const messageRouter = require("./routes/messageRouter");
-const pool = require("./db/config.js");
 
 const PORT = process.env.SERVER_PORT || 3000;
 
@@ -14,10 +13,11 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/", async (req, res) => {
-  const result = await pool.query("SELECT current_database()");
-  console.log(result.rows[0].current_database);
-  res.send(`The database name is: ${result.rows[0].current_database}`);
+app.get("/", (req, res) => {
+  res.json({
+    status: "ok",
+    message: "Mini message board is running",
+  });
 });
 
 // Routes
