@@ -15,7 +15,7 @@ const pool = new Pool({
   host: process.env.DB_HOST,
   database: hasRealConnectionString ? undefined : process.env.DB_DATABASE_NAME,
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
+  ssl: { rejectUnauthorized: false },
 });
 
 pool.on("connect", () => {
