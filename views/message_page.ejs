@@ -4,24 +4,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Messages</title>
-  <link rel="stylesheet" href="/styles-form.css">
+  <title>New Message</title>
+  <link rel="stylesheet" href="/styles-form.css" />
 </head>
 
 <body>
-  <h2>New Message</h2>
-  <form method="POST" action="/api/new">
-    <div>
-      <label for="author">Author</label>
-      <input type="text" name="author" id="" required>
-    </div>
-    <div>
-      <label for="message">Message</label>
-      <textarea name="message" id="" cols="22" rows="5" placeholder="Enter message here"></textarea>
-    </div>
-    <button type="submit">Submit</button>
-  </form>
-  <a href="/api">Display messages</a>
+  <main class="form-shell">
+    <section class="form-card">
+      <p class="eyebrow">Add to the board</p>
+      <h1>Share a new message</h1>
+      <p class="form-copy">Use this form to add a quick note to your portfolio-style message board.</p>
+      <form method="POST" action="/api/new">
+        <label for="author">Your name</label>
+        <input type="text" name="author" id="author" placeholder="Alex Johnson" required />
+
+        <label for="message">Message</label>
+        <textarea name="message" id="message" rows="5" placeholder="Write something memorable here..."
+          required></textarea>
+
+        <button type="submit">Publish message</button>
+      </form>
+      <a class="secondary-link" href="/api">View all messages</a>
+    </section>
+  </main>
 </body>
 
 </html>

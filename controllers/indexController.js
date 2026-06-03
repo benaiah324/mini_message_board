@@ -17,7 +17,17 @@ module.exports = {
   get: async (req, res) => {
     try {
       const messages = await getAllMessages();
-      res.render("index", { title: "Mini messageboard", messages });
+      const sortedMessages = [...messages].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at),
+      );
+      const latestMessage = sortedMessages[0] || null;
+
+      res.render("index", {
+        title: "Portfolio Message Board",
+        messages: sortedMessages,
+        messageCount: sortedMessages.length,
+        latestMessage,
+      });
     } catch (error) {
       return renderDatabaseError(res, error);
     }

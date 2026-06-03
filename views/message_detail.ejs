@@ -7,35 +7,28 @@
     <title>
         <%= title %>
     </title>
-    <link rel="stylesheet" href="/styles-index.css">
+    <link rel="stylesheet" href="/styles-index.css" />
 </head>
 
 <body>
-    <h1>Message Detail</h1>
-    <div class="container">
-        <div class="messages">
-            <div class="mess">
-                <h4>Message:</h4>
-                <p>
-                    <%= message.text %>
-                </p>
-            </div>
-            <div class="mess">
-                <h4>User:</h4>
-                <p>
-                    <%= message.author %>
-                </p>
-            </div>
-            <div class="mess">
-                <h4>Date:</h4>
-                <p>
-                    <%= message.created_at %>
-                </p>
-            </div>
-        </div>
-
-        <button class="btn-new-message" onclick="window.location.href='/api'">Back to messages</button>
-    </div>
+    <main class="page-shell detail-shell">
+        <section class="content-card detail-card">
+            <p class="eyebrow">Message detail</p>
+            <h1>Message snapshot</h1>
+            <article class="message-card detail-message">
+                <p class="message-text">“<%= message.text %>”</p>
+                <div class="message-meta">
+                    <span>By <strong>
+                            <%= message.author %>
+                        </strong></span>
+                    <span>
+                        <%= new Date(message.created_at).toLocaleString() %>
+                    </span>
+                </div>
+            </article>
+            <button class="btn-new-message" onclick="window.location.href='/api'">Back to board</button>
+        </section>
+    </main>
 </body>
 
 </html>
