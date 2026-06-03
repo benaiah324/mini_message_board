@@ -1,21 +1,21 @@
-const { Pool } = require("pg");
 require("dotenv").config();
+
+const { Pool } = require("pg");
 
 const isProduction = process.env.NODE_ENV === "production";
 const hasRealConnectionString =
   typeof process.env.DATABASE_URL === "string" &&
   /^postgres(?:ql)?:\/\//i.test(process.env.DATABASE_URL);
-const shouldUseSsl =
-  isProduction ||
-  hasRealConnectionString ||
-  /render\.com|postgresql/i.test(String(process.env.DB_HOST || ""));
 
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   database: hasRealConnectionString ? undefined : process.env.DB_DATABASE_NAME,
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
+  ssl:
+    isProduction || hasRealConnectionString
+      ? { rejectUnauthorized: false }
+      : false,
 });
 
 pool.on("connect", () => {

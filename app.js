@@ -6,7 +6,7 @@ const indexRouter = require("./routes/indexRouter");
 const messageRouter = require("./routes/messageRouter");
 const pool = require("./db/config.js");
 
-const PORT = process.env.SERVER_PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
